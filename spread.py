@@ -6,7 +6,7 @@ import pandas as pd
 #Gross Spread = Offer - Target 
 #Spread % = (Offer - Target)/Target
 target_ticker = "BMBL" 
-offer_price = 6.05 
+bumble_offer_price = 6.05 
 bumble = yf.Ticker(target_ticker)
 history = bumble.history(period="5d")
 
@@ -26,13 +26,13 @@ else:
     closing_prices = history_clean.loc[:, "Close"]
     current_target_price = closing_prices.iloc[-1]
 
-    spread_information = calculate_spread(offer_price, current_target_price)
+    spread_information = calculate_spread(bumble_offer_price, current_target_price)
     gspread, spreadp = spread_information
     print(f"The gross spread for today is ${gspread:.2f} and the spread percentage is {spreadp:.2%}.")
 
 ##########################################################################################
 
-#annualized return will be simple and non-compounded here, also dividends are ignored. 
+#Annualized return will be simple and non-compounded here, also dividends are ignored. 
     #Annualized return = (offer - target)/target * 365/(Days Expected to Close)
 #implied probability of deal completion where if the deal fails we assume target falls back to price before deal announced
 # Note that this version of implied P can result in cases where P>100% or <0% so we will need to account for that
@@ -54,5 +54,12 @@ def calculate_implied_p(offer_price, target_price, fallback_price):
     implied_p = (target_price - fallback_price)/(offer_price - fallback_price)
     return implied_p
 
+bumble_deal_history = bumble.history(start="2026-10-01")
+print (bumble_deal_history)
+bumblefallbackprice = bumble_deal_history.loc["2026-10-09", "Close"] 
+#using Oct. 9 as this is the day before Bumble deal was leaked
+print (f"Fallback price = {bumblefallbackprice}")
 
- 
+bumble_implied_p = calculate_implied_p(bumble_offer_price, current_target_price, bumblefallbackprice)
+print (f"The implied probability for Bumble is: {bumble_implied_p}")
+
