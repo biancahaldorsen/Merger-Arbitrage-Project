@@ -51,8 +51,15 @@ def calculate_annualized_return(offer_price, target_price, days_to_close):
     return annualized_return
 
 def calculate_implied_p(offer_price, target_price, fallback_price):
+    if offer_price - fallback_price == 0:
+        print ("The offer price is equal to the fallback price, meaning the divisor is 0 and the function cannot complete.")
+        return None
     implied_p = (target_price - fallback_price)/(offer_price - fallback_price)
-    return implied_p
+    if  implied_p <= 1 and implied_p >= 0:
+        return implied_p
+    else:
+        print (f"The implied probability is {implied_p} meaning the market price has gone past the boundaries of the model's assumptions.")
+        return implied_p
 
 bumble_deal_history = bumble.history(start="2026-10-01")
 print (bumble_deal_history)
