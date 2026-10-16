@@ -47,8 +47,20 @@ def calculate_offer_value(cash_per_share, exchange_ratio = 0, acquirer_p = 0):
     return offer_value
 
 def calculate_annualized_return(offer_price, target_price, days_to_close): 
+    if days_to_close == 0: 
+        print ("The days to close is 0 meaning that the deal is expeted to close today.")
+        return None
+    if days_to_close < 0: 
+        print ("The expected close day for the deal has already passed.") 
+        return None
+    if target_price <= 0: 
+        print ("The target price is 0 or negative, this is likely an error.")
+        return None
     annualized_return = (offer_price - target_price)/(target_price) * (365/days_to_close)
+    if offer_price < target_price: 
+        print (f"The annualized return is {annualized_return:.2%}, meaning the market may expect a higher offer value in the future.")
     return annualized_return
+    
 
 def calculate_implied_p(offer_price, target_price, fallback_price):
     if offer_price - fallback_price == 0:
