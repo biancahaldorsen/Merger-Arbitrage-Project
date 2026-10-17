@@ -1,0 +1,6 @@
+Target_Ticker,Acquirer_Ticker,Deal_Type,Cash_Per_Share,Exchange_Ratio,Announce_Date,Unaffected_Date,Expected_Close
+CBNK,PEBO,All-Stock,0.00,1.1100,2026-09-30,2026-09-29,2027-03-31
+BMBL,,All-Cash,6.05,0,2026-10-13,2026-10-09,2027-03-31
+PCRX,VTRS,All-Cash,36.50,0,2026-10-08,2026-10-07,2026-12-31
+WBS,SAN,All-Cash,11.25,0,2026-02-03,2026-02-02,2026-08-20
+LBRDA,CHTR,All-Stock,0.00,0.2360,2024-11-12,2024-09-23,2026-08-20
