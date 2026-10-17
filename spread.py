@@ -82,3 +82,4 @@ print (f"Fallback price = {bumblefallbackprice}")
 bumble_implied_p = calculate_implied_p(bumble_offer_price, current_target_price, bumblefallbackprice)
 print (f"The implied probability for Bumble is: {bumble_implied_p}")
 
+
