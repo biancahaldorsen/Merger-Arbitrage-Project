@@ -15,7 +15,7 @@ def get_latest_price(ticker):
     this_ticker = yf.Ticker(ticker) #sets ticker string from data frame to a yfinance ticker
     history = this_ticker.history(period = "5d")
     if history.empty:
-        print(f"There is no data available for ticker {ticker}. Check to make sure ticker is spelled correctly.")
+        print(f"There is no data available for ticker {ticker}.  Check that the ticker is spelled correctly, or the stock may be delisted (deal closed).")
         return None
     history_clean = history.dropna(subset = "Close")
     if history_clean.empty:
@@ -25,6 +25,7 @@ def get_latest_price(ticker):
     price = closing_prices.iloc[-1]
     return price
 
+#gets the stock price on a ticker for a given date 
 def get_price_on(ticker, date):
     if pd.isna(ticker):
         return None
@@ -43,6 +44,8 @@ def get_price_on(ticker, date):
     price = closing_prices.iloc[-1]
     return price
 
+#takes a given row from deals.csv and returns a dictionary of target, acquirer, price, offer value, spread percentage
+#days to close, annualized return, and implied probability 
 def analyze_deal(row): 
     target_ticker = row["Target_Ticker"]
     acquirer_ticker = row["Acquirer_Ticker"]
@@ -82,6 +85,15 @@ def analyze_deal(row):
             "Spread_Pct":deal_spread_percent, "Days_To_Close":days_to_close, 
             "Annualized":deal_annualized_return, "Implied_P":deal_implied_probability}
 
+deal_information_list = []
+for i, row in deals_table.iterrows(): #returns the position number of the row, and the data for that row
+    deal_information = analyze_deal(row)
+    if deal_information is not None:
+        deal_information_list.append(deal_information)
+
+print(f"the length is {len(deal_information_list)}")
+    
+
 #Used to chekck analyze_deal function for stock and cash deals  
 print(analyze_deal(deals_table.iloc[1]))
 print(analyze_deal(deals_table.iloc[0]))
@@ -93,3 +105,4 @@ print(f"Bumble's close price is {bumble_close_price}")
 bumble_price_on_date = get_price_on("BMBL", pd.to_datetime("2026-10-09"))
 print(f"Price was {bumble_price_on_date}.")
 bumble_price_on_date = get_price_on("BMBL", pd.to_datetime("2026-10-10"))
+
