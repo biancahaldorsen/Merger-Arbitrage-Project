@@ -37,3 +37,23 @@ def get_price_on(ticker, date):
     closing_prices = history_clean.loc[:, "Close"]
     price = closing_prices.iloc[-1]
     return price
+
+def get_price_history(ticker, start_date): 
+    if pd.isna(ticker):
+        return None
+    this_ticker = yf.Ticker(ticker)
+    ticker_history = this_ticker.history(start = start_date)
+    if ticker_history.empty:
+        print(f"There is no data available for ticker {ticker}. Check that the ticker is spelled correctly, or the stock may be delisted (deal closed).")
+        return None
+    ticker_history_cleaned = ticker_history.dropna(subset = "Close")
+    if ticker_history_cleaned.empty:
+        print(f"There are no valid closing prices for {ticker}.")
+        return None
+    closing_prices = ticker_history_cleaned.loc[:, "Close"]
+    return closing_prices
+
+print(get_price_history("BMBL", "2026-10-13"))
+    
+    # Returns a pandas Series of daily closing prices from start_date to today,
+    # or None if the ticker is blank or no data comes back
