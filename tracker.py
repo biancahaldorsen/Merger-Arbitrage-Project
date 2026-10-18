@@ -97,22 +97,3 @@ deal_information_df_sorted = deal_information_df.sort_values(by = "Annualized", 
 deal_information_df_sorted.to_csv("output/spreads.csv", index=False)
 
 ###############################################################################################
-
-#check to make sure deal_information_df_sorted data frame is correctly sorting  
-print (deal_information_df_sorted)
-
-#check to make suare deal_information_list is appending information correctly 
-print(f"the length is {len(deal_information_list)}")
-
-#Used to check analyze_deal function for stock and cash deals  
-print(analyze_deal(deals_table.iloc[1]))
-print(analyze_deal(deals_table.iloc[0]))
-
-
-#Used to check on close_price and price_on_date functions 
-bumble_close_price = get_latest_price("BMBL")
-print(f"Bumble's close price is {bumble_close_price}")
-bumble_price_on_date = get_price_on("BMBL", pd.to_datetime("2026-10-09"))
-print(f"Price was {bumble_price_on_date}.")
-bumble_price_on_date = get_price_on("BMBL", pd.to_datetime("2026-10-10"))
-
