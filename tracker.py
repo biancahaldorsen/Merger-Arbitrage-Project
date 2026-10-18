@@ -5,8 +5,6 @@ from spread import calculate_spread, calculate_offer_value, calculate_annualized
 ##########################################################################################
 #loading data from deals.csv 
 deals_table = pd.read_csv("deals.csv", parse_dates=["Announce_Date", "Unaffected_Date", "Expected_Close"])
-print (deals_table)
-print (deals_table.dtypes)
 
 #gets the most recent closing price for a given ticker and returns it as a float
 def get_latest_price(ticker):
