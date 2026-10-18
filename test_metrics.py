@@ -1,4 +1,4 @@
-from spread import calculate_spread, calculate_offer_value, calculate_annualized_return, calculate_implied_p
+from arbitrage.metrics import calculate_spread, calculate_offer_value, calculate_annualized_return, calculate_implied_p
 import pytest
 #
 # Test cases for implied probability : a normal case, p above 1, p below 0, and the zero-divisor case. 
