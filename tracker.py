@@ -91,10 +91,20 @@ for i, row in deals_table.iterrows(): #returns the position number of the row, a
     if deal_information is not None:
         deal_information_list.append(deal_information)
 
-print(f"the length is {len(deal_information_list)}")
-    
+deal_information_df = pd.DataFrame(deal_information_list)
+deal_information_df_sorted = deal_information_df.sort_values(by = "Annualized", ascending = False)
 
-#Used to chekck analyze_deal function for stock and cash deals  
+deal_information_df_sorted.to_csv("output/spreads.csv", index=False)
+
+###############################################################################################
+
+#check to make sure deal_information_df_sorted data frame is correctly sorting  
+print (deal_information_df_sorted)
+
+#check to make suare deal_information_list is appending information correctly 
+print(f"the length is {len(deal_information_list)}")
+
+#Used to check analyze_deal function for stock and cash deals  
 print(analyze_deal(deals_table.iloc[1]))
 print(analyze_deal(deals_table.iloc[0]))
 
