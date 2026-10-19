@@ -52,8 +52,6 @@ def get_price_history(ticker, start_date):
         return None
     closing_prices = ticker_history_cleaned.loc[:, "Close"]
     return closing_prices
-
-print(get_price_history("BMBL", "2026-10-13"))
     
     # Returns a pandas Series of daily closing prices from start_date to today,
     # or None if the ticker is blank or no data comes back
