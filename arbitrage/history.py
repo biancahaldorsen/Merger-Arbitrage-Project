@@ -1,6 +1,8 @@
 from arbitrage.data import get_price_history, get_price_on
 import pandas as pd
 from arbitrage.metrics import calculate_offer_value, calculate_spread
+#creates a new table of a deal spread history w target price, acquirer price, offer value,.. 
+#..spread pct, implied p given a row from a table of basic deal information 
 def calculate_spread_history(row): 
    target_ticker = row["Target_Ticker"]
    acquirer_ticker = row["Acquirer_Ticker"]
@@ -35,7 +37,7 @@ def calculate_spread_history(row):
        price_history_df_cleaned["Implied_P"] = (price_history_df_cleaned["Target_Price"] - fallback_price)/(price_history_df_cleaned["Offer_Value"] - fallback_price)
        return price_history_df_cleaned
    
-   
+
 
 
       

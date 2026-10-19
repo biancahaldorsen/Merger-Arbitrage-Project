@@ -51,6 +51,7 @@ def get_price_history(ticker, start_date):
         print(f"There are no valid closing prices for {ticker}.")
         return None
     closing_prices = ticker_history_cleaned.loc[:, "Close"]
+    closing_prices.index = closing_prices.index.tz_localize(None)
     return closing_prices
     
     # Returns a pandas Series of daily closing prices from start_date to today,
