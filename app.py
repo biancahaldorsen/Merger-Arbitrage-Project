@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 st.title("Merger Spread Information")
 st.write("This application allows you to input basic information regarding an on-going merger deal and displays the relevant spread information.")
 
@@ -21,6 +22,17 @@ if submitted:
 
     if not acquirer_ticker_cleaned: 
         acquirer_ticker_cleaned = None
+    
+    pd_announcement_date = pd.Timestamp(announcement_date)
+    pd_unaffected_date = pd.Timestamp(unaffected_date)
+    pd_expected_close = pd.Timestamp(expected_close)
+
+    current_deal_dictionary = {"Target_Ticker" : target_ticker_cleaned, "Acquirer_Ticker" : acquirer_ticker_cleaned, 
+                               "Cash_Per_Share": cash_per_share, "Exchange_Ratio": exchange_ratio,
+                               "Announce_Date": pd_announcement_date, "Unaffected_Date": pd_unaffected_date,
+                               "Expected_Close": pd_expected_close}
+    deal_row = pd.Series(current_deal_dictionary)
+
 
 
     #GIT COMMIT 
