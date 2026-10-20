@@ -1,4 +1,4 @@
-from arbitrage.metrics import calculate_spread, calculate_offer_value, calculate_annualized_return, calculate_implied_p
+from arbitrage.metrics import calculate_spread, calculate_offer_value, calculate_annualized_return, calculate_implied_p, calculate_adjusted_fallback
 import pytest
 #
 # Test cases for implied probability : a normal case, p above 1, p below 0, and the zero-divisor case. 
@@ -50,3 +50,13 @@ def test_days_is_zero():
 def test_days_is_negative():
     annualized_return = calculate_annualized_return(10, 8, -20)
     assert annualized_return is None
+#Test case for calculate_adjusted_fallback 
+def test_adjusted_fallback_normal():
+    adjusted_fallback = calculate_adjusted_fallback(35, 50, 45)
+    assert adjusted_fallback == 31.50
+def test_adjusted_fallback_check1():
+    adjusted_fallback = calculate_adjusted_fallback(35, 0, 45)
+    assert adjusted_fallback is None
+def test_adjusted_fallback_check2():
+    adjusted_fallback = calculate_adjusted_fallback(35, 50, None)
+    assert adjusted_fallback is None   

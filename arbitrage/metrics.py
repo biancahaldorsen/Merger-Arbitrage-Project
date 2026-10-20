@@ -46,4 +46,15 @@ def calculate_implied_p(offer_price, target_price, fallback_price):
         print (f"The implied probability is {implied_p:.2%} meaning the market price has gone past the boundaries of the model's assumptions.")
         return implied_p
 
+#calculates and returns the deal fallback price based on the unaffected date but is scaled 
+# by how much comparable stocks have moved since
 
+def calculate_adjusted_fallback(unaffected_price, index_price_then, index_price_now): 
+    if unaffected_price is None or index_price_then is None or index_price_now is None:
+        print("The function inputs are not complete. At least one argument is None.")
+        return None
+    if index_price_then <= 0: 
+        print (f"The index price on the unaffected 0 or negative. The fallback price cannot be calculated.")
+        return None
+    adjusted_fallback_price = unaffected_price *(index_price_now/index_price_then)
+    return adjusted_fallback_price
