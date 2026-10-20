@@ -1,8 +1,11 @@
 import pandas as pd
 import yfinance as yf
 from datetime import timedelta
+import streamlit as st
 
 #gets the most recent closing price for a given ticker and returns it as a float
+
+@st.cache_data(ttl=600)
 def get_latest_price(ticker):
     if pd.isna(ticker):
         return None
@@ -20,6 +23,7 @@ def get_latest_price(ticker):
     return price
 
 #gets the stock price on a ticker for a given date 
+@st.cache_data(ttl=600)
 def get_price_on(ticker, date):
     if pd.isna(ticker):
         return None
@@ -38,6 +42,7 @@ def get_price_on(ticker, date):
     price = closing_prices.iloc[-1]
     return price
 
+@st.cache_data(ttl=600)
 def get_price_history(ticker, start_date): 
     if pd.isna(ticker):
         return None
