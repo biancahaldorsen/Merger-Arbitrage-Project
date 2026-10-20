@@ -6,6 +6,16 @@ from arbitrage.charts import plot_spread
 st.title("Merger Spread Information")
 st.write("This application allows you to input basic information regarding an on-going merger deal and displays the relevant spread information.")
 
+with st.expander ("See website information"):
+    st.write("This merger arbitrage spread tool uses python and information drawn from Yahoo Finance via Ran Aroussi's yfinance" \
+    " to allow the user to input the basic deal information regarding an upcoming merger and observe the spread chart, the deal's " \
+    "offer value, the annualized return, and the implied probability of the deal taking place.")
+    st.write("Please note that the implied probability is derived from the current trading price of the target " \
+             "company relative to both the deal's offer price and a fallback price pulled from the entered "\
+             "unaffected date. This means there is an assumption that the target company stock would simply return "\
+             "to its old valuation pre-deal announcement if the deal were to fail.")
+    st.caption("WARNING: This tool is not investment advice and should be used at the user's discretion.")
+
 with st.form ("deal_form"): 
     st.write("Enter deal details below.")
     acquirer_ticker = st.text_input ("Enter Acquirer Ticker (optional, stock deals only)")
