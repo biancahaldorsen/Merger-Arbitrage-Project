@@ -35,7 +35,7 @@ def calculate_spread_history(row):
        price_history_df_cleaned["Implied_P"] = None
    else: 
        price_history_df_cleaned["Implied_P"] = (price_history_df_cleaned["Target_Price"] - fallback_price)/(price_history_df_cleaned["Offer_Value"] - fallback_price)
-       return price_history_df_cleaned
+   return price_history_df_cleaned
    
 
 

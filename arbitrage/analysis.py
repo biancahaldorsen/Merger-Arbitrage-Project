@@ -61,5 +61,3 @@ def analyze_deal(row, index_ticker = None):
             "Annualized":deal_annualized_return, "Implied_P":deal_implied_probability,
             "Fallback":deal_fallback_price, "Fallback_Adjusted":adjusted_fallback,
             "Adjusted_Implied_P":adjusted_implied_p, "Index_Change":index_change}
-
-analyze_deal
