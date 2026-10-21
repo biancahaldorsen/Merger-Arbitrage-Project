@@ -3,49 +3,68 @@ import pandas as pd
 from arbitrage.analysis import analyze_deal
 from arbitrage.history import calculate_spread_history
 from arbitrage.charts import plot_spread, plot_spread_interactive
+
+st.set_page_config(layout="wide", page_title = "Merger Arb Tracker", page_icon="📈")
+
+# Colors big text (headings and metric numbers) in the accent blue.
+# Small text stays white from textColor in .streamlit/config.toml
+st.html("""
+<style>
+h1, h2, h3,
+[data-testid="stMetricValue"] {
+    color: #1a73e8;
+}
+</style>
+""")
+
 st.title("Merger Spread Information")
 st.write("This application allows you to input basic information regarding an on-going merger deal and displays the relevant spread information.")
 
-with st.expander ("See website information"):
-    st.write("This merger arbitrage spread tool uses python and information drawn from Yahoo Finance via Ran Aroussi's yfinance" \
-    " to allow the user to input the basic deal information regarding an upcoming merger and observe the spread chart, the deal's " \
-    "offer value, the annualized return, and the implied probability of the deal taking place.")
-    st.write("Please note that the implied probability is derived from the current trading price of the target " \
-             "company relative to both the deal's offer price and a fallback price pulled from the entered "\
-             "unaffected date. This means there is an assumption that the target company stock would simply return "\
-             "to its old valuation pre-deal announcement if the deal were to fail.")
-    st.write("The user can receive an adjusted implied probability and adjusted fallback price by inputting " \
-    "the target's sector as a benchmark to scale the target's unaffected price by how much " \
-              " its sector has moved since the unaffected date.")
-    st.caption("WARNING: This tool is not investment advice and should be used at the user's discretion.")
 
-with st.form ("deal_form"): 
-    st.write("Enter deal details below.")
-    acquirer_ticker = st.text_input ("Enter Acquirer Ticker (optional, stock deals only)")
-    target_ticker = st.text_input ("Enter Target Ticker")
-    cash_per_share = st.number_input(label = "Enter Cash Per Share",value = 0.00, min_value= 0.00, placeholder= "Type a number...",
-                                     step = 0.01, format = "%0.2f")
-    exchange_ratio = st.number_input(label = "Enter Exchange Ratio", value = 0.00, min_value = 0.00, placeholder = "Type a number...",
-                                     step = 0.0001, format = "%0.4f")
-    announcement_date = st.date_input(label ="Enter Announcement Date", value = None) 
-    unaffected_date = st.date_input(label ="Enter Unaffected Date", value = None) 
-    expected_close =  st.date_input(label ="Enter Expected Close Date", value = None) 
+with st.sidebar:
+    with st.form ("deal_form"): 
+        st.write("Enter deal details below.")
+        acquirer_ticker = st.text_input ("Enter Acquirer Ticker (optional, stock deals only)")
+        target_ticker = st.text_input ("Enter Target Ticker")
+        cash_per_share = st.number_input(label = "Enter Cash Per Share",value = 0.00, min_value= 0.00, placeholder= "Type a number...",
+                                        step = 0.01, format = "%0.2f")
+        exchange_ratio = st.number_input(label = "Enter Exchange Ratio", value = 0.00, min_value = 0.00, placeholder = "Type a number...",
+                                        step = 0.0001, format = "%0.4f")
+        announcement_date = st.date_input(label ="Enter Announcement Date", value = None) 
+        unaffected_date = st.date_input(label ="Enter Unaffected Date", value = None) 
+        expected_close =  st.date_input(label ="Enter Expected Close Date", value = None) 
 
-    converted_benchmark = {"General market (SPY)": "SPY", "Communication services (XLC)": "XLC", 
-                           "Consumer discretionary (XLY)":"XLY", "Consumer staples (XLP)":"XLP",
-                            "Energy (XLE)": "XLE", "Financials (XLF)":"XLF",
-                            "Regional banks (KRE)":"KRE", "Health care (XLV)": "XLV","Industrials (XLI)":"XLI",
-                              "Materials (XLB)":"XLB", "Real estate (XLRE)" : "XLRE","Technology (XLK)":"XLK",
-                               "Utilities (XLU)": "XLU", "None, simple fallback only" : None } 
-    chosen_benchmark = st.selectbox(label = "Choose a benchmark for the target company's fallback price:", 
-                                    options = list(converted_benchmark.keys()), 
-                                    help = "To find a target's sector, check its profile on Yahoo Finance or look in its 10-K.")
+        converted_benchmark = {"General market (SPY)": "SPY", "Communication services (XLC)": "XLC", 
+                            "Consumer discretionary (XLY)":"XLY", "Consumer staples (XLP)":"XLP",
+                                "Energy (XLE)": "XLE", "Financials (XLF)":"XLF",
+                                "Regional banks (KRE)":"KRE", "Health care (XLV)": "XLV","Industrials (XLI)":"XLI",
+                                "Materials (XLB)":"XLB", "Real estate (XLRE)" : "XLRE","Technology (XLK)":"XLK",
+                                "Utilities (XLU)": "XLU", "None, simple fallback only" : None } 
+        chosen_benchmark = st.selectbox(label = "Choose a benchmark for the target company's fallback price:", 
+                                        options = list(converted_benchmark.keys()), 
+                                        help = "To find a target's sector, check its profile on Yahoo Finance or look in its 10-K.")
 
-    #note that now converted_benchmark[chosen_benchmark]is the chosen ticker
-    benchmark_ticker = converted_benchmark[chosen_benchmark]
+        #note that now converted_benchmark[chosen_benchmark]is the chosen ticker
+        benchmark_ticker = converted_benchmark[chosen_benchmark]
 
-    submitted = st.form_submit_button("Submit Deal")
+        submitted = st.form_submit_button("Submit Deal")
 
+    with st.expander ("See website information"):
+        st.write("This merger arbitrage spread tool uses python and information drawn from Yahoo Finance via Ran Aroussi's yfinance" \
+        " to allow the user to input the basic deal information regarding an upcoming merger and observe the spread chart, the deal's " \
+        "offer value, the annualized return, and the implied probability of the deal taking place.")
+        st.write("Please note that the implied probability is derived from the current trading price of the target " \
+                "company relative to both the deal's offer price and a fallback price pulled from the entered "\
+                "unaffected date. This means there is an assumption that the target company stock would simply return "\
+                "to its old valuation pre-deal announcement if the deal were to fail.")
+        st.write("The user can receive an adjusted implied probability and adjusted fallback price by inputting " \
+        "the target's sector as a benchmark to scale the target's unaffected price by how much " \
+                " its sector has moved since the unaffected date.")
+        st.caption("WARNING: This tool is not investment advice and should be used at the user's discretion.")
+
+if not submitted:
+    st.info("Enter a deal in the sidebar to see its spread")
+    st.stop()
 
 if submitted: 
     acquirer_ticker_cleaned = acquirer_ticker.strip().upper()
@@ -100,6 +119,31 @@ if submitted:
         st.stop()
 
     else:
+        #deal name assignment
+        if acquirer_ticker_cleaned is not None: 
+            deal_name = f"{target_ticker_cleaned} → {acquirer_ticker_cleaned}"
+        else: 
+            deal_name = target_ticker_cleaned
+        st.subheader(deal_name)
+        
+        #deal type and deal terms assignment for caption
+        if cash_per_share > 0 and exchange_ratio > 0:
+            deal_type = "Mixed"
+            deal_terms = f"${cash_per_share:.2f} cash + {exchange_ratio:.4f} {acquirer_ticker_cleaned} shares per share"
+        elif exchange_ratio > 0: 
+            deal_type = "All-Stock"
+            deal_terms = f"{exchange_ratio:.4f} {acquirer_ticker_cleaned} shares per share"
+        else:
+            deal_type = "All-Cash"
+            deal_terms = f"${cash_per_share:.2f} cash per share"
+    
+        #expected close and announcement date assignment
+        announcement_date_formatted = f"{pd_announcement_date:%b %d, %Y}"
+        expected_close_formatted = f"{pd_expected_close:%b %d, %Y}"
+
+        deal_terms_caption = f"{deal_type} · {deal_terms} · Announced {announcement_date_formatted} · Expected Close {expected_close_formatted}"
+        st.caption(deal_terms_caption)
+
         col1, col2, col3 = st.columns(3) #1st row of columns 
         spread_percent = f"{deal_analysis['Spread_Pct']:.2%}"
         col1.metric("Spread %", spread_percent)

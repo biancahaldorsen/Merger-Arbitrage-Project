@@ -1,0 +1,8 @@
+[theme]
+base = "dark"
+primaryColor = "#1a73e8" #accent: buttons, links, highlights
+backgroundColor = "#212532ff"
+textColor = "#bfd8f8ff"
+secondaryBackgroundColor = "#3f566dff" #side bar and input boxes
+borderColor ="#878787ff"
+font = "sans-serif"
