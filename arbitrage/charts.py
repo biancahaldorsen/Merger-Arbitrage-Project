@@ -57,6 +57,9 @@ def plot_spread_interactive (history_df, title):
         hover_template2 = "%{x|%b %d, %Y}<br>Implied p: %{y:.1%}<extra></extra>" 
         figure.add_trace(go.Scatter(x=history_df.index, y=history_df.loc[:, "Implied_P"], mode="lines+markers", 
                                 name = "Implied Probability", hovertemplate=hover_template2), secondary_y= True)
-
     
+    if "Adjusted_Implied_P" in history_df.columns and history_df["Adjusted_Implied_P"].notna().any():
+        hover_template3 = "%{x|%b %d, %Y}<br>Adjusted Implied p: %{y:.1%}<extra></extra>" 
+        figure.add_trace(go.Scatter(x=history_df.index, y=history_df.loc[:, "Adjusted_Implied_P"], mode="lines+markers", 
+                                name = "Adjusted Implied Probability", hovertemplate=hover_template3, line= dict(dash = "dash"), visible="legendonly"), secondary_y= True)
     return figure 

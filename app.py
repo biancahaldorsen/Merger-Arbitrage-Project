@@ -164,9 +164,7 @@ if submitted:
             else: 
                 st.caption(f"{benchmark_ticker} data unavailable.")
 
-
-
-        spread_history = calculate_spread_history(deal_row)
+        spread_history = calculate_spread_history(deal_row, index_ticker=benchmark_ticker)
         if spread_history is None:
             st.warning("The spread history chart is unavailable for this deal.")
         else: 
