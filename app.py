@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from arbitrage.analysis import analyze_deal
 from arbitrage.history import calculate_spread_history
-from arbitrage.charts import plot_spread
+from arbitrage.charts import plot_spread, plot_spread_interactive
 st.title("Merger Spread Information")
 st.write("This application allows you to input basic information regarding an on-going merger deal and displays the relevant spread information.")
 
@@ -170,8 +170,8 @@ if submitted:
         if spread_history is None:
             st.warning("The spread history chart is unavailable for this deal.")
         else: 
-            spread_plot = plot_spread(spread_history, f"{target_ticker_cleaned} Merger Spread")
-            st.pyplot(spread_plot)
+            spread_plot = plot_spread_interactive(spread_history, f"{target_ticker_cleaned} Merger Spread")
+            st.plotly_chart(spread_plot, width="stretch")
 
 #Test: run the app and enter CBNK's deal (target CBNK, acquirer PEBO, ratio 1.1100, cash 0, 
 # announced 2026-09-30, unaffected 2026-09-29, close 2027-03-31), choose "Regional banks (KRE)",
