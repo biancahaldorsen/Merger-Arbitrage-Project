@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 def plot_spread(history_df, title):
     figure, axis = plt.subplots()
@@ -28,12 +29,18 @@ def plot_spread(history_df, title):
 #builds an interactive plotly chart
 
 def plot_spread_interactive (history_df, title):
-    figure = go.Figure()
-    figure.update_yaxes(tickformat = ".2%")
-    figure.update_xaxes(rangebreaks = [dict(bounds=["sat", "mon"])])
-    figure.update_layout(title = title, xaxis_title="Date", yaxis_title="Spread Percentage")
+    figure = make_subplots(specs = [[{"secondary_y":True}]]) # []list of rows in grid then [] list of charts in a row {}settings for one chart
+    figure.update_yaxes(tickformat = ".2%", secondary_y = False, title_text = "Spread")
+    figure.update_yaxes(secondary_y= True, title_text = "Implied Probability", tickformat = ".1%")
 
-#adds information when mous hovers over graph points 
+    range_buttons = [dict(count = 7, label = "1w", step = "day", stepmode = "backward" ),
+                     dict(count = 1, label = "1mon", step = "month", stepmode = "backward"),
+                     dict(step = "all", label = "All")] #we count backward from most recent date in order to show the most recent week 
+
+    figure.update_xaxes(rangebreaks = [dict(bounds=["sat", "mon"])], rangeselector = dict(buttons = range_buttons))
+    figure.update_layout(title = title, xaxis_title="Date")
+
+#adds information when mouse hovers over graph points 
     hover_columns = ["Target_Price", "Offer_Value", "Implied_P"]
     hover_template= "%{x|%b %d, %Y}<br>Spread: %{y:.2%}<br>Target price: %{customdata[0]:$.2f}" \
     "<br>Offer value: %{customdata[1]:$.2f}<br>Implied p: %{customdata[2]:.1%} "
@@ -44,6 +51,12 @@ def plot_spread_interactive (history_df, title):
     hover_template = hover_template + "<extra></extra>"
     
     figure.add_trace(go.Scatter(x=history_df.index, y=history_df.loc[:, "Spread_Pct"], mode="lines+markers", 
-                                name = "Spread", customdata= history_df[hover_columns], hovertemplate=hover_template))
+                                name = "Spread", customdata= history_df[hover_columns], hovertemplate=hover_template), secondary_y= False)
+    
+    if history_df["Implied_P"].notna().any():
+        hover_template2 = "%{x|%b %d, %Y}<br>Implied p: %{y:.1%}<extra></extra>" 
+        figure.add_trace(go.Scatter(x=history_df.index, y=history_df.loc[:, "Implied_P"], mode="lines+markers", 
+                                name = "Implied Probability", hovertemplate=hover_template2), secondary_y= True)
+
     
     return figure 
